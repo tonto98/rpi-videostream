@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>Video Streaming Demonstration</title>
+  </head>
+  <body>
+    <h1>Video Streaming Demonstration</h1>
+    <img id="bg" src="{{ url_for('video_feed') }}">
+    <br>
+    <form action="/open" method="POST">
+	<input type="submit" value="OPEN">
+    </form>
+  </body>
+</html>
