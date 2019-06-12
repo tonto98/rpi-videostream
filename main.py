@@ -1,22 +1,6 @@
-#!/usr/bin/env python
-#
-# Project: Video Streaming with Flask
-# Author: Log0 <im [dot] ckieric [at] gmail [dot] com>
-# Date: 2014/12/21
-# Website: http://www.chioka.in/
-# Description:
-# Modified to support streaming out with webcams, and not just raw JPEGs.
-# Most of the code credits to Miguel Grinberg, except that I made a small tweak. Thanks!
-# Credits: http://blog.miguelgrinberg.com/post/video-streaming-with-flask
-#
-# Usage:
-# 1. Install Python dependencies: cv2, flask. (wish that pip install works like a charm)
-# 2. Run "python main.py".
-# 3. Navigate the browser to the local webpage.
 from flask import Flask, render_template, Response
 from camera import VideoCamera
 
-import os
 import subprocess
 
 import RPi.GPIO as GPIO
@@ -25,7 +9,6 @@ off_pin = 18
 btn_pin = 15
 
 GPIO.setmode(GPIO.BCM)
-#GPIO.cleanup()
 GPIO.setwarnings(False)
 GPIO.setup(btn_pin, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(off_pin, GPIO.OUT)
@@ -41,7 +24,6 @@ def index():
 def gen(camera):
     print("gen")
     while True:
-        #print("neki while")
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
@@ -55,9 +37,7 @@ def video_feed():
 @app.route('/open', methods=["POST"])
 def open():
     subprocess.Popen(["python", "lock.py"])
-    #os.system("python lock.py")
-    return index()
-
+    return index()  
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
